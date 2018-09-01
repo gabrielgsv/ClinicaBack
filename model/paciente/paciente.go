@@ -10,4 +10,5 @@ type Paciente struct {
 	Hospital       string `json:"hospital"`
 	Carteira       string `json:"carteira"`
 	Role           string `json:"role"`
+	Ativo          string `json:"ativo"`
 }

@@ -91,6 +91,34 @@ func Buscar(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// BuscarEspecializacao ...
+func BuscarEspecializacao(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota buscar por especialização médico ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	medicos = medicos[:0]
+	medicoBuscar := medico.Medico{}
+
+	err := json.NewDecoder(r.Body).Decode(&medicoBuscar)
+	mensagemErro = "erro_corpo"
+	CheckErro(w, r, mensagemErro, err)
+
+	query := "SELECT codigo, UPPER(nome) , UPPER(email) ,data_nascimento, especializacao, hospital,crm FROM medico WHERE especializacao = ?"
+	rows, err := DB.Query(query, medicoBuscar.Especializacao)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	for rows.Next() {
+		medico := medico.Medico{}
+		rows.Scan(&medico.Codigo, &medico.Nome, &medico.Email, &medico.DataNascimento, &medico.Especializacao, &medico.Hospital,
+			&medico.Crm)
+		medicos = append(medicos, medico)
+	}
+
+	json.NewEncoder(w).Encode(medicos)
+
+}
+
 // Alterar ...
 func Alterar(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Chamando rota alterar medico ...")

@@ -47,6 +47,7 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/medico", medico.Todos).Methods("GET")
 	rotas.HandleFunc("/api/alterarmedico", medico.Alterar).Methods("POST")
 	rotas.HandleFunc("/api/buscarmedico", medico.Buscar).Methods("POST")
+	rotas.HandleFunc("/api/especializacao", medico.BuscarEspecializacao).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(portaAplicacao, handler))
 }
