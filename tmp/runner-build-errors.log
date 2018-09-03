@@ -1,2 +1,2 @@
 # ClinicaBack/routes
-routes\routes.go:28:14: c.Handler undefined (type func() *cors.Cors has no field or method Handler)
+routes\routes.go:15:2: imported and not used: "ClinicaBack/vendor/github.com/rs/cors"

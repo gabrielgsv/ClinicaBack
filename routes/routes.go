@@ -12,7 +12,7 @@ import (
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
-	"github.com/rs/cors"
+	// "github.com/rs/cors"
 )
 
 var portaAplicacao string
@@ -22,10 +22,6 @@ func HandleFunc() {
 	rotas := mux.NewRouter().StrictSlash(true)
 
 	db.TestarConn()
-
-	c := cors.Default()
-
-	handler := c.Handler(rotas)
 
 	portaAplicacao = ":" + os.Getenv("PORT")
 
@@ -46,5 +42,5 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/buscarmedico", medico.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/especializacao", medico.BuscarEspecializacao).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(portaAplicacao, handler))
+	log.Fatal(http.ListenAndServe(portaAplicacao, rotas))
 }
