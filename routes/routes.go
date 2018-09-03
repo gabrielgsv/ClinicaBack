@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	// "github.com/gorilla/handlers"
 	"github.com/rs/cors"
 )
 
@@ -18,14 +19,15 @@ var portaAplicacao string
 // HandleFunc ...
 func HandleFunc() {
 	rotas := mux.NewRouter().StrictSlash(true)
+
 	db.TestarConn()
 
 	c := cors.New(cors.Options{
-		AllowedMethods:     []string{"GET", "POST", "PUT", "OPTIONS"},
-		AllowedOrigins:     []string{"*"},
-		AllowCredentials:   true,
-		AllowedHeaders:     []string{"Content-Type", "Bearer", "Bearer ", "content-type", "Origin", "Accept"},
-		OptionsPassthrough: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
+		AllowedOrigins:   []string{"*", "http://localhost:3000"},
+		AllowCredentials: true,
+		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept", "X-Requested-With", "Authorization"},
+		Debug:            true,
 	})
 
 	handler := c.Handler(rotas)

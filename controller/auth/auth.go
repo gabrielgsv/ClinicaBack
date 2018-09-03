@@ -62,12 +62,12 @@ var usuario UsuarioBuscado
 var usuarioToken Usuario
 
 func init() {
-	privateBytes, err := ioutil.ReadFile("../private.rsa")
+	privateBytes, err := ioutil.ReadFile("./private.rsa")
 	if err != nil {
 		log.Fatal(err, "Erro ao abrir a chave privada !")
 	}
 
-	publicBytes, err := ioutil.ReadFile("../public.rsa.pub")
+	publicBytes, err := ioutil.ReadFile("./public.rsa.pub")
 	if err != nil {
 		log.Fatal("Erro ao abrir a chave pública !")
 	}
