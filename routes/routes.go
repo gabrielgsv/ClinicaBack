@@ -11,8 +11,8 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/gorilla/handlers"
-	// "github.com/rs/cors"
+	// "github.com/gorilla/handlers"
+	"github.com/rs/cors"
 )
 
 var portaAplicacao string
@@ -23,10 +23,15 @@ func HandleFunc() {
 
 	db.TestarConn()
 
-	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With"})
-    allowedOrigins := handlers.AllowedOrigins([]string{"*"})
-	allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
-	corsObj := handlers.AllowedOrigins([]string{"*"})
+	c := cors.New(cors.Options{
+		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
+		AllowedOrigins:   []string{"*", "https://clini-react-staging.herokuapp.com"},
+		AllowCredentials: true,
+		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept"},
+		Debug:            true,
+	})
+
+	handler := c.Handler(rotas)
 
 	portaAplicacao = ":" + os.Getenv("PORT")
 
@@ -47,5 +52,5 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/buscarmedico", medico.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/especializacao", medico.BuscarEspecializacao).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(portaAplicacao,handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods, corsObj)(rotas)))
+	log.Fatal(http.ListenAndServe(portaAplicacao, handler))
 }
