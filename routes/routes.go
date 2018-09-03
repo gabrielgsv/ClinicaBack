@@ -27,7 +27,7 @@ func HandleFunc() {
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
-		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept", "X-Requested-With", "Authorization"},
+		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept"},
 		Debug:            true,
 	})
 
