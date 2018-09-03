@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
@@ -24,7 +25,7 @@ func HandleFunc() {
 
 	c := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
-		AllowedOrigins:   []string{"*", "http://localhost:3000"},
+		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept", "X-Requested-With", "Authorization"},
 		Debug:            true,
@@ -32,7 +33,7 @@ func HandleFunc() {
 
 	handler := c.Handler(rotas)
 
-	portaAplicacao = ":3001"
+	portaAplicacao = ":" + os.Getenv("PORT")
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
