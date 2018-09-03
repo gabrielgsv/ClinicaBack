@@ -1,0 +1,35 @@
+{
+	"ImportPath": "ClinicaBack",
+	"GoVersion": "go1.11",
+	"GodepVersion": "v80",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v3.2.0-2-g0b96aaa",
+			"Rev": "0b96aaa707760d6ab28d9b9d1913ff5993328bae"
+		},
+		{
+			"ImportPath": "github.com/dgrijalva/jwt-go/request",
+			"Comment": "v3.2.0-2-g0b96aaa",
+			"Rev": "0b96aaa707760d6ab28d9b9d1913ff5993328bae"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "v1.4.0-5-g99ff426",
+			"Rev": "99ff426eb706cffe92ff3d058e168b278cabf7c7"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.6.2-8-gcf6680b",
+			"Rev": "cf6680bc62d81bcd52bbf1c991bfe8b7ec98e270"
+		},
+		{
+			"ImportPath": "github.com/rs/cors",
+			"Comment": "v1.5.0-3-gdc7332a",
+			"Rev": "dc7332ab32be5dfec05dae2a6ab79cbfa53b6407"
+		}
+	]
+}

@@ -1,7 +1,7 @@
 package painel
 
 import (
-	"Projeto_Clinica/back/config"
+	"ClinicaBack/config"
 	"encoding/json"
 	"fmt"
 	"net/http"
