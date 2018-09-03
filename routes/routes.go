@@ -25,7 +25,8 @@ func HandleFunc() {
 
 	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With"})
     allowedOrigins := handlers.AllowedOrigins([]string{"*"})
-    allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
+	allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
+	corsObj := handlers.AllowedOrigins([]string{"*"})
 
 	portaAplicacao = ":" + os.Getenv("PORT")
 
@@ -46,5 +47,5 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/buscarmedico", medico.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/especializacao", medico.BuscarEspecializacao).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(portaAplicacao,handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods)(rotas)))
+	log.Fatal(http.ListenAndServe(portaAplicacao,handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods, corsObj)(rotas)))
 }
