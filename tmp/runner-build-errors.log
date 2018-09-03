@@ -1,1 +1,2 @@
-go build ClinicaBack: open tmp\runner-build.exe: O arquivo já está sendo usado por outro processo.
+# ClinicaBack/routes
+routes\routes.go:28:14: c.Handler undefined (type func() *cors.Cors has no field or method Handler)

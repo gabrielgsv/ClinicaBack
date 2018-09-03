@@ -23,13 +23,7 @@ func HandleFunc() {
 
 	db.TestarConn()
 
-	c := cors.New(cors.Options{
-		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
-		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept"},
-		Debug:            true,
-	})
+	c := cors.Default()
 
 	handler := c.Handler(rotas)
 
