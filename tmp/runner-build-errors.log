@@ -1,2 +1,2 @@
 # ClinicaBack/routes
-routes\routes.go:15:2: imported and not used: "ClinicaBack/vendor/github.com/rs/cors"
+routes\routes.go:49:117: syntax error: unexpected newline, expecting comma or )

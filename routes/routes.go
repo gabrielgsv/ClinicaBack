@@ -11,7 +11,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	// "github.com/gorilla/handlers"
+	"github.com/gorilla/handlers"
 	// "github.com/rs/cors"
 )
 
@@ -22,6 +22,10 @@ func HandleFunc() {
 	rotas := mux.NewRouter().StrictSlash(true)
 
 	db.TestarConn()
+
+	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With"})
+    allowedOrigins := handlers.AllowedOrigins([]string{"*"})
+    allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 
 	portaAplicacao = ":" + os.Getenv("PORT")
 
@@ -42,5 +46,5 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/buscarmedico", medico.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/especializacao", medico.BuscarEspecializacao).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(portaAplicacao, rotas))
+	log.Fatal(http.ListenAndServe(portaAplicacao,handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods)(rotas)))
 }
