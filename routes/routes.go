@@ -25,7 +25,7 @@ func HandleFunc() {
 
 	c := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
-		AllowedOrigins:   []string{"*", "https://clini-react-staging.herokuapp.com"},
+		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept"},
 		Debug:            true,
