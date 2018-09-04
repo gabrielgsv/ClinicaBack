@@ -1,2 +1,2 @@
 # ClinicaBack/routes
-routes\routes.go:35:27: undefined: os.Get
+routes\routes.go:11:2: imported and not used: "os"

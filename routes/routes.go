@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
@@ -32,13 +31,7 @@ func HandleFunc() {
 	})
 
 	handler := c.Handler(rotas)
-	fmt.Println("hostname:", os.Getenv("HOST"))
-	
-	if os.Getenv("HOST") == "https://clini-api-staging.herokuapp.com" {
-		portaAplicacao = ":" + os.Getenv("PORT") //heroku
-	} else {
 		portaAplicacao = ":3001" //localhost
-	}
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
