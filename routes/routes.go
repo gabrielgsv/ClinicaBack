@@ -38,7 +38,7 @@ func HandleFunc() {
 		fmt.Println("hostname:", hostname)
 	}
 
-	if hostname == "clini-api-staging.herokuapp.com" {
+	if hostname == "5f4d561b-c8c2-4320-b1a3-72d13919b639" {
 		portaAplicacao = ":" + os.Getenv("PORT") //heroku
 	} else {
 		portaAplicacao = ":3001" //localhost
