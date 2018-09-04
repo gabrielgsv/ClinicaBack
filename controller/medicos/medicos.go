@@ -1,8 +1,8 @@
 package medico
 
 import (
-	"ClinicaBack/config"
-	"ClinicaBack/model/medico"
+	"Projeto_Clinica/ClinicaBack/config"
+	"Projeto_Clinica/ClinicaBack/model/medico"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -48,7 +48,7 @@ func Todos(w http.ResponseWriter, r *http.Request) {
 
 	medicos = medicos[:0]
 
-	query := "SELECT codigo,nome,email,data_nascimento,especializacao,hospital,crm FROM medico"
+	query := "SELECT codigo,nome,email,data_nascimento,especializacao,hospital,crm, ativo FROM medico"
 	rows, err := DB.Query(query)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
@@ -56,7 +56,7 @@ func Todos(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		medico := medico.Medico{}
 		rows.Scan(&medico.Codigo, &medico.Nome, &medico.Email, &medico.DataNascimento, &medico.Especializacao,
-			&medico.Hospital, &medico.Crm)
+			&medico.Hospital, &medico.Crm, &medico.Ativo)
 		medicos = append(medicos, medico)
 	}
 

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"ClinicaBack/config"
+	"Projeto_Clinica/ClinicaBack/config"
 	"crypto/rsa"
 	"encoding/json"
 	"fmt"

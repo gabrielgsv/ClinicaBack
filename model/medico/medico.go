@@ -11,5 +11,5 @@ type Medico struct {
 	Hospital       string `json:"hospital"`
 	Crm            string `json:"crm"`
 	Role           string `json:"role"`
-	Status         bool   `json:"status"`
+	Ativo          string `json:"ativo"`
 }
