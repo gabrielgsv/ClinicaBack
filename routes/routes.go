@@ -32,14 +32,9 @@ func HandleFunc() {
 	})
 
 	handler := c.Handler(rotas)
-
-	hostName, err := os.Hostname()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("hostname:", hostName)
-
-	if hostName == "https://clini-api-staging.herokuapp.com" {
+	fmt.Println("hostname:", os.Getenv("HOST"))
+	
+	if os.Getenv("HOST") == "https://clini-api-staging.herokuapp.com" {
 		portaAplicacao = ":" + os.Getenv("PORT") //heroku
 	} else {
 		portaAplicacao = ":3001" //localhost
