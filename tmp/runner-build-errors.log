@@ -1,2 +1,2 @@
 # ClinicaBack/routes
-routes\routes.go:11:2: imported and not used: "os"
+routes\routes.go:35:23: undefined: os
