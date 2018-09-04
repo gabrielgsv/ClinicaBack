@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"Projeto_Clinica/ClinicaBack/config"
-	"Projeto_Clinica/ClinicaBack/model/paciente"
+	"ClinicaBack/config"
+	"ClinicaBack/model/paciente"
 )
 
 //DB ...

@@ -1,8 +1,8 @@
 package medico
 
 import (
-	"Projeto_Clinica/ClinicaBack/config"
-	"Projeto_Clinica/ClinicaBack/model/medico"
+	"ClinicaBack/config"
+	"ClinicaBack/model/medico"
 	"encoding/json"
 	"fmt"
 	"net/http"
