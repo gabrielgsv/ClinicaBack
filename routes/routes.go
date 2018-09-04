@@ -33,9 +33,16 @@ func HandleFunc() {
 
 	handler := c.Handler(rotas)
 
-	// portaAplicacao = ":3001" //localhost
-	portaAplicacao = ":" + os.Getenv("PORT") //heroku
+	hostname, err := os.Hostname()
+	if err == nil {
+		fmt.Println("hostname:", hostname)
+	}
 
+	if hostname == "clini-api-staging.herokuapp.com" {
+		portaAplicacao = ":" + os.Getenv("PORT") //heroku
+	} else {
+		portaAplicacao = ":3001" //localhost
+	}
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
 	rotas.HandleFunc("/api/login", auth.Logar).Methods("POST")
