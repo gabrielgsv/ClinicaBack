@@ -25,13 +25,13 @@ func Adicionar(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
-	query := "INSERT INTO medico (nome, email, senha, data_nascimento, especializacao, hospital, crm, role) VALUES(?,?,?,?,?,?,?,?)"
+	query := "INSERT INTO medico (nome, email, senha, data_nascimento, especializacao, hospital, crm, role, ativo) VALUES(?,?,?,?,?,?,?,?,?)"
 	stmt, err := DB.Prepare(query)
 	mensagemErro = "query_montagem_erro"
 	CheckErro(w, r, mensagemErro, err)
 	fmt.Println(query)
 
-	_, err = stmt.Exec(novoMedico.Nome, novoMedico.Email, novoMedico.Senha, &novoMedico.DataNascimento, &novoMedico.Especializacao, &novoMedico.Hospital, &novoMedico.Crm, "m")
+	_, err = stmt.Exec(novoMedico.Nome, novoMedico.Email, novoMedico.Senha, &novoMedico.DataNascimento, &novoMedico.Especializacao, &novoMedico.Hospital, &novoMedico.Crm, "m", "a")
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
 
@@ -75,7 +75,7 @@ func Buscar(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
-	query := "SELECT codigo, UPPER(nome) , UPPER(email) ,data_nascimento, especializacao, hospital,crm FROM medico WHERE nome LIKE ?"
+	query := "SELECT codigo, UPPER(nome) , UPPER(email) ,data_nascimento, especializacao, hospital, crm, ativo FROM medico WHERE nome LIKE ?"
 	rows, err := DB.Query(query, medicoBuscar.Nome)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
@@ -83,7 +83,7 @@ func Buscar(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		medico := medico.Medico{}
 		rows.Scan(&medico.Codigo, &medico.Nome, &medico.Email, &medico.DataNascimento, &medico.Especializacao, &medico.Hospital,
-			&medico.Crm)
+			&medico.Crm, &medico.Ativo)
 		medicos = append(medicos, medico)
 	}
 
@@ -103,7 +103,7 @@ func BuscarEspecializacao(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
-	query := "SELECT codigo, UPPER(nome) , UPPER(email) ,data_nascimento, especializacao, hospital,crm FROM medico WHERE especializacao = ?"
+	query := "SELECT codigo, UPPER(nome) , UPPER(email) ,data_nascimento, especializacao, hospital,crm, ativo FROM medico WHERE especializacao = ?"
 	rows, err := DB.Query(query, medicoBuscar.Especializacao)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
@@ -111,7 +111,7 @@ func BuscarEspecializacao(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		medico := medico.Medico{}
 		rows.Scan(&medico.Codigo, &medico.Nome, &medico.Email, &medico.DataNascimento, &medico.Especializacao, &medico.Hospital,
-			&medico.Crm)
+			&medico.Crm, &medico.Ativo)
 		medicos = append(medicos, medico)
 	}
 
@@ -129,11 +129,11 @@ func Alterar(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
-	stmt, err := DB.Prepare("UPDATE medico SET nome = ? , email = ? , especializacao = ? , data_nascimento = ? , hospital = ? , crm = ? WHERE codigo = ?")
+	stmt, err := DB.Prepare("UPDATE medico SET nome = ? , email = ? , especializacao = ? , data_nascimento = ? , hospital = ? , crm = ?, ativo = ? WHERE codigo = ?")
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
 
-	stmt.Exec(medico.Nome, medico.Email, medico.Especializacao, medico.DataNascimento, medico.Hospital, medico.Crm, medico.Codigo)
+	stmt.Exec(medico.Nome, medico.Email, medico.Especializacao, medico.DataNascimento, medico.Hospital, medico.Crm, medico.Ativo, medico.Codigo)
 	json.NewEncoder(w).Encode(medico)
 
 }

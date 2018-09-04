@@ -33,7 +33,7 @@ func Adicionar(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(query)
 
-	_, err = stmt.Exec(novoPaciente.Nome, novoPaciente.Email, novoPaciente.Senha, novoPaciente.DataNascimento, novoPaciente.Hospital, novoPaciente.Carteira, "p", 1)
+	_, err = stmt.Exec(novoPaciente.Nome, novoPaciente.Email, novoPaciente.Senha, novoPaciente.DataNascimento, novoPaciente.Hospital, novoPaciente.Carteira, "p", "a")
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
 
