@@ -1,6 +1,6 @@
 package main
 
-import "Projeto_Clinica/ClinicaBack/routes"
+import "ClinicaBack/routes"
 
 func main() {
 	routes.HandleFunc()
