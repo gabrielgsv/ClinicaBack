@@ -1,14 +1,13 @@
 package routes
 
 import (
-	"ClinicaBack/config"
-	"ClinicaBack/controller/auth"
-	"ClinicaBack/controller/medicos"
-	"ClinicaBack/controller/pacientes"
+	"Projeto_Clinica/ClinicaBack/config"
+	"Projeto_Clinica/ClinicaBack/controller/auth"
+	"Projeto_Clinica/ClinicaBack/controller/medicos"
+	"Projeto_Clinica/ClinicaBack/controller/pacientes"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
@@ -33,8 +32,8 @@ func HandleFunc() {
 
 	handler := c.Handler(rotas)
 
-	// portaAplicacao = ":3001" //localhost
-	portaAplicacao = ":" + os.Getenv("PORT") //heroku
+	portaAplicacao = ":3001" //localhost
+	// portaAplicacao = ":" + os.Getenv("PORT") //heroku
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
