@@ -25,7 +25,7 @@ func HandleFunc() {
 
 	c := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
-		AllowedOrigins:   []string{"https://clini-react-staging.herokuapp.com"},
+		AllowedOrigins:   []string{"https://clini-react-staging.herokuapp.com", "http://localhost:3000"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"Content-Type", "Bearer", "content-type", "Origin", "Accept", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Authorization"},
 		Debug:            true,
@@ -33,7 +33,8 @@ func HandleFunc() {
 
 	handler := c.Handler(rotas)
 
-	portaAplicacao = ":" + os.Getenv("PORT")
+	// portaAplicacao = ":3001" //localhost
+	portaAplicacao = ":" + os.Getenv("PORT") //heroku
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 

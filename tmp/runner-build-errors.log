@@ -1,2 +1,2 @@
 # ClinicaBack/routes
-routes\routes.go:49:117: syntax error: unexpected newline, expecting comma or )
+routes\routes.go:37:25: undefined: os
