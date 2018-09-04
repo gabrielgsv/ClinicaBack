@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"Projeto_Clinica/ClinicaBack/config"
-	"Projeto_Clinica/ClinicaBack/controller/auth"
-	"Projeto_Clinica/ClinicaBack/controller/medicos"
-	"Projeto_Clinica/ClinicaBack/controller/pacientes"
+	"ClinicaBack/config"
+	"ClinicaBack/controller/auth"
+	"ClinicaBack/controller/medicos"
+	"ClinicaBack/controller/pacientes"
 	"fmt"
 	"log"
 	"net/http"
