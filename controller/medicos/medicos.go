@@ -2,6 +2,7 @@ package medico
 
 import (
 	"ClinicaBack/config"
+	"ClinicaBack/model/agendamento"
 	"ClinicaBack/model/medico"
 	"encoding/json"
 	"fmt"
@@ -13,6 +14,7 @@ var DB = db.Con
 var mensagemErro string
 
 var medicos []medico.Medico
+var agendamentos []agendamento.Agendamento
 
 // Adicionar ...
 func Adicionar(w http.ResponseWriter, r *http.Request) {
@@ -117,6 +119,32 @@ func BuscarEspecializacao(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(medicos)
 
+}
+
+// BuscarHorariosDisponiveis ...
+func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota buscar horarios disponíveis do médico ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	agendamentos = agendamentos[:0]
+	novoAgendamento := agendamento.Agendamento{}
+
+	err := json.NewDecoder(r.Body).Decode(&novoAgendamento)
+	mensagemErro = "erro_corpo"
+	CheckErro(w, r, mensagemErro, err)
+
+	query := "SELECT data,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND hora BETWEEN ? AND ?;"
+	rows, err := DB.Query(query, novoAgendamento.Codigomedico, novoAgendamento.Data, novoAgendamento.HoraInicio, novoAgendamento.HoraFim)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	for rows.Next() {
+		agendamento := agendamento.Agendamento{}
+		rows.Scan(&agendamento.Data, &agendamento.HoraFim)
+		agendamentos = append(agendamentos, agendamento)
+	}
+
+	json.NewEncoder(w).Encode(agendamentos)
 }
 
 // Alterar ...
