@@ -130,10 +130,14 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	novoAgendamento := agendamento.Agendamento{}
 
 	err := json.NewDecoder(r.Body).Decode(&novoAgendamento)
+	fmt.Println(novoAgendamento.Codigomedico)
+	fmt.Println(novoAgendamento.Data)
+	fmt.Println(novoAgendamento.HoraInicio)
+	fmt.Println(novoAgendamento.HoraFim)
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
-	query := "SELECT data,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND hora BETWEEN ? AND ?;"
+	query := "SELECT data,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND hora BETWEEN ? AND ?"
 	rows, err := DB.Query(query, novoAgendamento.Codigomedico, novoAgendamento.Data, novoAgendamento.HoraInicio, novoAgendamento.HoraFim)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
