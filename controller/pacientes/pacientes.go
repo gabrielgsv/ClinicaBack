@@ -5,7 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
 	"ClinicaBack/config"
+	"ClinicaBack/model/agendamento"
+	"ClinicaBack/model/agendapaciente"
 	"ClinicaBack/model/paciente"
 )
 
@@ -14,6 +18,8 @@ var DB = db.Con
 var mensagemErro string
 
 var pacientes []paciente.Paciente
+var agendamentos []agendamento.Agendamento
+var agendapacientes []agendapaciente.AgendaPaciente
 
 // Adicionar ...
 func Adicionar(w http.ResponseWriter, r *http.Request) {
@@ -112,6 +118,56 @@ func Alterar(w http.ResponseWriter, r *http.Request) {
 
 	stmt.Exec(paciente.Nome, paciente.Email, paciente.DataNascimento, paciente.Hospital, paciente.Carteira, paciente.Ativo, paciente.Codigo)
 	json.NewEncoder(w).Encode(paciente)
+
+}
+
+// AdicionarConsulta ...
+func AdicionarConsulta(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota adicionar nova consulta ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	novoAgendamento := agendamento.Agendamento{}
+
+	err := json.NewDecoder(r.Body).Decode(&novoAgendamento)
+
+	mensagemErro = "erro_corpo"
+	CheckErro(w, r, mensagemErro, err)
+
+	stmt, err := DB.Prepare("INSERT INTO agendamento (codigopaciente, codigomedico, data, hora, motivo, alergias, status) VALUES(?,?,?,?,?,?,?)")
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	stmt.Exec(novoAgendamento.Codigopaciente, novoAgendamento.Codigomedico, novoAgendamento.Data,
+		novoAgendamento.HoraInicio, novoAgendamento.Motivo, novoAgendamento.Alergias, "a")
+	json.NewEncoder(w).Encode(novoAgendamento)
+
+}
+
+// Agenda ...
+func Agenda(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota agenda paciente ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	data := mux.Vars(r)["data"]
+	codigopaciente := mux.Vars(r)["codigopaciente"]
+
+	agendas := agendapacientes[:0]
+
+	query := "SELECT nome,especializacao,hora,status FROM agendamento " +
+		"INNER JOIN medico " +
+		"ON medico.codigo = agendamento.codigomedico " +
+		"WHERE codigopaciente = ? AND data = ?"
+	rows, err := DB.Query(query, codigopaciente, data)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	for rows.Next() {
+		agenda := agendapaciente.AgendaPaciente{}
+		rows.Scan(&agenda.NomeMedico, &agenda.Especializacao, &agenda.Hora, &agenda.Status)
+		agendas = append(agendas, agenda)
+	}
+
+	json.NewEncoder(w).Encode(agendas)
 
 }
 

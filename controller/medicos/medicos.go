@@ -128,12 +128,9 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 
 	agendamentos = agendamentos[:0]
 	novoAgendamento := agendamento.Agendamento{}
+	agendamento := agendamento.Agendamento{}
 
 	err := json.NewDecoder(r.Body).Decode(&novoAgendamento)
-	fmt.Println(novoAgendamento.Codigomedico)
-	fmt.Println(novoAgendamento.Data)
-	fmt.Println(novoAgendamento.HoraInicio)
-	fmt.Println(novoAgendamento.HoraFim)
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
@@ -143,12 +140,15 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	CheckErro(w, r, mensagemErro, err)
 
 	for rows.Next() {
-		agendamento := agendamento.Agendamento{}
 		rows.Scan(&agendamento.Data, &agendamento.HoraFim)
 		agendamentos = append(agendamentos, agendamento)
 	}
 
-	json.NewEncoder(w).Encode(agendamentos)
+	if len(agendamentos) > 0 {
+		w.WriteHeader(400)
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 // Alterar ...
