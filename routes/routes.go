@@ -19,9 +19,7 @@ var portaAplicacao string
 // HandleFunc ...
 func HandleFunc() {
 	rotas := mux.NewRouter().StrictSlash(true)
-
 	db.TestarConn()
-
 	c := cors.New(cors.Options{
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS"},
 		AllowedOrigins:   []string{"https://clini-react-staging.herokuapp.com", "http://localhost:3000"},
@@ -31,9 +29,8 @@ func HandleFunc() {
 	})
 
 	handler := c.Handler(rotas)
-
-	portaAplicacao = ":3001" //localhost
-	// portaAplicacao = ":" + os.Getenv("PORT") //heroku
+	// portaAplicacao = ":3001" //localhost
+	portaAplicacao = ":" + os.Getenv("PORT") //heroku
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
@@ -47,6 +44,7 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/buscarpaciente", pacientes.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/novaconsulta", pacientes.AdicionarConsulta).Methods("POST")
 	rotas.HandleFunc("/api/paciente/agenda/{data}/{codigopaciente}", pacientes.Agenda).Methods("GET")
+	rotas.HandleFunc("/api/paciente/agenda/{codigopaciente}", pacientes.AgendaHome).Methods("GET")
 
 	rotas.HandleFunc("/api/medico", medico.Adicionar).Methods("POST")
 	rotas.HandleFunc("/api/medico", medico.Todos).Methods("GET")

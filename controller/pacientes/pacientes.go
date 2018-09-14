@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 
@@ -133,6 +134,13 @@ func AdicionarConsulta(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "erro_corpo"
 	CheckErro(w, r, mensagemErro, err)
 
+	fmt.Println(novoAgendamento.Codigomedico)
+	fmt.Println(novoAgendamento.Codigopaciente)
+	fmt.Println(novoAgendamento.Data)
+	fmt.Println(novoAgendamento.HoraInicio)
+	fmt.Println(novoAgendamento.Motivo)
+	fmt.Println(novoAgendamento.Alergias)
+
 	stmt, err := DB.Prepare("INSERT INTO agendamento (codigopaciente, codigomedico, data, hora, motivo, alergias, status) VALUES(?,?,?,?,?,?,?)")
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
@@ -164,6 +172,37 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		agenda := agendapaciente.AgendaPaciente{}
 		rows.Scan(&agenda.NomeMedico, &agenda.Especializacao, &agenda.Hora, &agenda.Status)
+		agendas = append(agendas, agenda)
+	}
+
+	json.NewEncoder(w).Encode(agendas)
+
+}
+
+// AgendaHome ...
+func AgendaHome(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota agenda home ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	currentTime := time.Now()
+	dataAtual := currentTime.Format("2006-01-02")
+	codigopaciente := mux.Vars(r)["codigopaciente"]
+
+	agendas := agendapacientes[:0]
+
+	fmt.Println(codigopaciente, dataAtual)
+
+	query := "SELECT agendamento.codigo,nome,especializacao,hora,status FROM agendamento " +
+		"INNER JOIN medico " +
+		"ON medico.codigo = agendamento.codigomedico " +
+		"WHERE codigopaciente = ? AND data = ?"
+	rows, err := DB.Query(query, codigopaciente, dataAtual)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	for rows.Next() {
+		agenda := agendapaciente.AgendaPaciente{}
+		rows.Scan(&agenda.Codigo, &agenda.NomeMedico, &agenda.Especializacao, &agenda.Hora, &agenda.Status)
 		agendas = append(agendas, agenda)
 	}
 
