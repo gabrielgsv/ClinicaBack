@@ -171,12 +171,16 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(data)
 	fmt.Println(codigomedico)
 
-	for rows.Next() {
-		rows.Scan(&agendamento.HoraInicio)
-		agendamentos = append(agendamentos, agendamento)
+	err , _ := rows.Next(){
+		fmt.Println(err)
 	}
 
-	json.NewEncoder(w).Encode(agendamentos)
+	// for rows.Next() {
+	// 	rows.Scan(&agendamento.HoraInicio)
+	// 	agendamentos = append(agendamentos, agendamento)
+	// }
+
+	// json.NewEncoder(w).Encode(agendamentos)
 }
 
 // Alterar ...
