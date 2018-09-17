@@ -163,17 +163,20 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	data := mux.Vars(r)["data"]
 	codigomedico := mux.Vars(r)["codigomedico"]
 
-	query := "SELECT hora FROM agendamento WHERE codigomedico = ? AND data = ? AND status <> a"
+	query := "SELECT hora FROM agendamento WHERE codigomedico = ? AND data = ?"
 	rows, err := DB.Query(query, codigomedico, data)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
+
+	fmt.Println(data)
+	fmt.Println(codigomedico)
 
 	for rows.Next() {
 		rows.Scan(&agendamento.HoraInicio)
 		agendamentos = append(agendamentos, agendamento)
 	}
 
-	json.NewEncoder(w).Encode(agendamento)
+	json.NewEncoder(w).Encode(agendamentos)
 }
 
 // Alterar ...
