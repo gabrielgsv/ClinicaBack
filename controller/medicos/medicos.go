@@ -173,11 +173,7 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 		agendamentos = append(agendamentos, agendamento)
 	}
 
-	if len(agendamentos) > 0 {
-		w.WriteHeader(400)
-	} else {
-		w.WriteHeader(http.StatusOK)
-	}
+	json.NewEncoder(w).Encode(agendamento)
 }
 
 // Alterar ...
