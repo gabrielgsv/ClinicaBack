@@ -1,2 +1,2 @@
 # ClinicaBack/routes
-routes\routes.go:35:23: undefined: os
+routes\routes.go:34:25: undefined: os
