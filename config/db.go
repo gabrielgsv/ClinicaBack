@@ -13,6 +13,8 @@ var Con, err = sql.Open("mysql", "auraj25xu2pirozw:ddiuegczyopso39b@tcp(jw0ch9vo
 
 // var Con, err = sql.Open("mysql", "jv:libra2010@/db_clinica")
 
+// var Con, err = sql.Open("mysql", "root@/clini_db")
+
 //TestarConn ...
 func TestarConn() {
 	if err != nil {

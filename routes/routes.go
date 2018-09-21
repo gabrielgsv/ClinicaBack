@@ -45,7 +45,7 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/alterarpaciente", pacientes.Alterar).Methods("POST")
 	rotas.HandleFunc("/api/buscarpaciente", pacientes.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/novaconsulta", pacientes.AdicionarConsulta).Methods("POST")
-	rotas.HandleFunc("/api/paciente/agenda/{data}/{codigopaciente}", pacientes.Agenda).Methods("GET")
+	rotas.HandleFunc("/api/paciente/agenda/{dataString}/{codigopaciente}", pacientes.Agenda).Methods("GET")
 	rotas.HandleFunc("/api/paciente/agenda/{codigopaciente}", pacientes.AgendaHome).Methods("GET")
 
 	rotas.HandleFunc("/api/medico", medico.Adicionar).Methods("POST")
