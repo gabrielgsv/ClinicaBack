@@ -9,10 +9,10 @@ import (
 )
 
 // Con ...
-// var Con, err = sql.Open("mysql", "auraj25xu2pirozw:ddiuegczyopso39b@tcp(jw0ch9vofhcajqg7.cbetxkdyhwsb.us-east-1.rds.amazonaws.com)/kzi50q30ap322cl4")
+var Con, err = sql.Open("mysql", "auraj25xu2pirozw:ddiuegczyopso39b@tcp(jw0ch9vofhcajqg7.cbetxkdyhwsb.us-east-1.rds.amazonaws.com)/kzi50q30ap322cl4")
 
 // Con ...
-var Con, err = sql.Open("mysql", "root:root@/db_clinica")
+// var Con, err = sql.Open("mysql", "root:root@/db_clinica")
 
 //TestarConn ...
 func TestarConn() {
