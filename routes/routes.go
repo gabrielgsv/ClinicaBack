@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
@@ -30,9 +29,8 @@ func HandleFunc() {
 	})
 
 	handler := c.Handler(rotas)
-	// portaAplicacao = ":3001" //localhost
-	// teste
-	portaAplicacao = ":" + os.Getenv("PORT") //heroku
+	portaAplicacao = ":3001" //localhost
+	// portaAplicacao = ":" + os.Getenv("PORT") //heroku
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
@@ -53,7 +51,8 @@ func HandleFunc() {
 	rotas.HandleFunc("/api/alterarmedico", medico.Alterar).Methods("POST")
 	rotas.HandleFunc("/api/buscarmedico", medico.Buscar).Methods("POST")
 	rotas.HandleFunc("/api/especializacao", medico.BuscarEspecializacao).Methods("POST")
-	rotas.HandleFunc("/api/medico/horariosdisponiveis", medico.BuscarHorariosDisponiveis).Methods("POST")
+	// rotas.HandleFunc("/api/medico/horariosdisponiveis", medico.BuscarHorariosDisponiveis).Methods("POST")
+	rotas.HandleFunc("/api/medico/horariosdisponiveis/{data}/{codigomedico}", medico.BuscarHorariosDisponiveis).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(portaAplicacao, handler))
 }

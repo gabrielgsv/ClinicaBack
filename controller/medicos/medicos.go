@@ -3,10 +3,13 @@ package medico
 import (
 	"ClinicaBack/config"
 	"ClinicaBack/model/agendamento"
+	"ClinicaBack/model/horariosagenda"
 	"ClinicaBack/model/medico"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 //DB ...
@@ -15,6 +18,7 @@ var mensagemErro string
 
 var medicos []medico.Medico
 var agendamentos []agendamento.Agendamento
+var horarios []horariosagenda.Horariosagenda
 
 // Adicionar ...
 func Adicionar(w http.ResponseWriter, r *http.Request) {
@@ -122,32 +126,67 @@ func BuscarEspecializacao(w http.ResponseWriter, r *http.Request) {
 }
 
 // BuscarHorariosDisponiveis ...
+// func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Println("Chamando rota buscar horarios disponíveis do médico ...")
+// 	w.Header().Set("Content-Type", "application/json")
+
+// 	agendamentos = agendamentos[:0]
+// 	novoAgendamento := agendamento.Agendamento{}
+// 	agendamento := agendamento.Agendamento{}
+
+// 	err := json.NewDecoder(r.Body).Decode(&novoAgendamento)
+// 	mensagemErro = "erro_corpo"
+// 	CheckErro(w, r, mensagemErro, err)
+
+// 	query := "SELECT data,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND hora BETWEEN ? AND ?"
+// 	rows, err := DB.Query(query, novoAgendamento.Codigomedico, novoAgendamento.Data, novoAgendamento.HoraInicio, novoAgendamento.HoraFim)
+// 	mensagemErro = "query_exec_erro"
+// 	CheckErro(w, r, mensagemErro, err)
+
+// 	for rows.Next() {
+// 		rows.Scan(&agendamento.Data, &agendamento.HoraFim)
+// 		agendamentos = append(agendamentos, agendamento)
+// 	}
+
+// 	if len(agendamentos) > 0 {
+// 		w.WriteHeader(400)
+// 	} else {
+// 		w.WriteHeader(http.StatusOK)
+// 	}
+// }
+
+// BuscarHorariosDisponiveis ...
 func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Chamando rota buscar horarios disponíveis do médico ...")
 	w.Header().Set("Content-Type", "application/json")
 
-	agendamentos = agendamentos[:0]
-	novoAgendamento := agendamento.Agendamento{}
-	agendamento := agendamento.Agendamento{}
+	horarios = horarios[:0]
+	horario := horariosagenda.Horariosagenda{}
 
-	err := json.NewDecoder(r.Body).Decode(&novoAgendamento)
-	mensagemErro = "erro_corpo"
-	CheckErro(w, r, mensagemErro, err)
+	data := mux.Vars(r)["data"]
+	codigomedico := mux.Vars(r)["codigomedico"]
 
-	query := "SELECT data,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND hora BETWEEN ? AND ?"
-	rows, err := DB.Query(query, novoAgendamento.Codigomedico, novoAgendamento.Data, novoAgendamento.HoraInicio, novoAgendamento.HoraFim)
+	query := "SELECT codigo,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND status != 'a'"
+	rows, err := DB.Query(query, codigomedico, data)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
 
-	for rows.Next() {
-		rows.Scan(&agendamento.Data, &agendamento.HoraFim)
-		agendamentos = append(agendamentos, agendamento)
-	}
+	fmt.Println(data)
+	fmt.Println(codigomedico)
 
-	if len(agendamentos) > 0 {
-		w.WriteHeader(400)
-	} else {
+	if rows != nil {
+		for rows.Next() {
+			rows.Scan(&horario.Codigo, &horario.Horario)
+			horarios = append(horarios, horario)
+		}
+
+		jsonResult, err := json.Marshal(horarios)
+		if err != nil {
+			fmt.Fprintln(w, "Erro ao gerar o json.")
+			return
+		}
 		w.WriteHeader(http.StatusOK)
+		w.Write(jsonResult)
 	}
 }
 
