@@ -162,7 +162,7 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 
 	horarios = horarios[:0]
 	horario := horariosagenda.Horariosagenda{}
-
+  
 	data := mux.Vars(r)["data"]
 	codigomedico := mux.Vars(r)["codigomedico"]
 
@@ -171,8 +171,6 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
 
-	fmt.Println(data)
-	fmt.Println(codigomedico)
 
 	if rows != nil {
 		for rows.Next() {

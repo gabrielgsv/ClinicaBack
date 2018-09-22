@@ -156,7 +156,7 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Chamando rota agenda paciente ...")
 	w.Header().Set("Content-Type", "application/json")
 
-	data := mux.Vars(r)["data"]
+	data := mux.Vars(r)["dataString"]
 	codigopaciente := mux.Vars(r)["codigopaciente"]
 
 	agendas := agendapacientes[:0]

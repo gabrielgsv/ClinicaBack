@@ -14,6 +14,8 @@ import (
 // Con ...
 var Con, err = sql.Open("mysql", "root:root@/db_clinica")
 
+// var Con, err = sql.Open("mysql", "root@/clini_db")
+
 //TestarConn ...
 func TestarConn() {
 	if err != nil {
