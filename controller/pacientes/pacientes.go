@@ -137,7 +137,7 @@ func AdicionarConsulta(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(novoAgendamento.Codigomedico)
 	fmt.Println(novoAgendamento.Codigopaciente)
 	fmt.Println(novoAgendamento.Data)
-	fmt.Println(novoAgendamento.HoraInicio)
+	fmt.Println(novoAgendamento.Horario)
 	fmt.Println(novoAgendamento.Motivo)
 	fmt.Println(novoAgendamento.Alergias)
 
@@ -146,7 +146,7 @@ func AdicionarConsulta(w http.ResponseWriter, r *http.Request) {
 	CheckErro(w, r, mensagemErro, err)
 
 	stmt.Exec(novoAgendamento.Codigopaciente, novoAgendamento.Codigomedico, novoAgendamento.Data,
-		novoAgendamento.HoraInicio, novoAgendamento.Motivo, novoAgendamento.Alergias, "a")
+		novoAgendamento.Horario, novoAgendamento.Motivo, novoAgendamento.Alergias, "a")
 	json.NewEncoder(w).Encode(novoAgendamento)
 
 }
@@ -161,7 +161,7 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 
 	agendas := agendapacientes[:0]
 
-	query := "SELECT nome,especializacao,hora,status FROM agendamento " +
+	query := "SELECT agendamento.codigo,nome,especializacao,hora,status FROM agendamento " +
 		"INNER JOIN medico " +
 		"ON medico.codigo = agendamento.codigomedico " +
 		"WHERE codigopaciente = ? AND data = ?"
@@ -171,7 +171,7 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		agenda := agendapaciente.AgendaPaciente{}
-		rows.Scan(&agenda.NomeMedico, &agenda.Especializacao, &agenda.Hora, &agenda.Status)
+		rows.Scan(&agenda.Codigo, &agenda.NomeMedico, &agenda.Especializacao, &agenda.Hora, &agenda.Status)
 		agendas = append(agendas, agenda)
 	}
 
@@ -189,8 +189,6 @@ func AgendaHome(w http.ResponseWriter, r *http.Request) {
 	codigopaciente := mux.Vars(r)["codigopaciente"]
 
 	agendas := agendapacientes[:0]
-
-	fmt.Println(codigopaciente, dataAtual)
 
 	query := "SELECT agendamento.codigo,nome,especializacao,hora,status FROM agendamento " +
 		"INNER JOIN medico " +

@@ -171,8 +171,36 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
 
-	fmt.Println(data)
-	fmt.Println(codigomedico)
+	if rows != nil {
+		for rows.Next() {
+			rows.Scan(&horario.Codigo, &horario.Horario)
+			horarios = append(horarios, horario)
+		}
+
+		jsonResult, err := json.Marshal(horarios)
+		if err != nil {
+			fmt.Fprintln(w, "Erro ao gerar o json.")
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonResult)
+	}
+}
+
+func BuscarHorariosIndisponiveis(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota buscar horarios indisponíveis do médico ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	horarios = horarios[:0]
+	horario := horariosagenda.Horariosagenda{}
+
+	data := mux.Vars(r)["data"]
+	codigomedico := mux.Vars(r)["codigomedico"]
+
+	query := "SELECT codigo,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND status = 'a'"
+	rows, err := DB.Query(query, codigomedico, data)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
 
 	if rows != nil {
 		for rows.Next() {
