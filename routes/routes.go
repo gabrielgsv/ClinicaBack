@@ -31,7 +31,7 @@ func HandleFunc() {
 
 	handler := c.Handler(rotas)
 	// portaAplicacao = ":3001" //localhost
-	portaAplicacao = ":" + os.Getenv("PORT") //heroku aplicação
+	portaAplicacao = ":" + os.Getenv("PORT") //heroku
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
