@@ -179,9 +179,47 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// TotalAgendasDia ...
+func TotalAgendasDia(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota total agendas do dia ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	currentTime := time.Now()
+	dataAtual := currentTime.Format("2006-01-02")
+	codigopaciente := mux.Vars(r)["codigopaciente"]
+
+	agendas := paciente.Paciente{}
+
+	query := "SELECT COUNT(*) FROM agendamento WHERE codigopaciente = ? AND data = ?"
+
+	row := DB.QueryRow(query, codigopaciente, dataAtual)
+
+	row.Scan(&agendas.AgendamentosDia)
+
+	json.NewEncoder(w).Encode(agendas)
+}
+
+// TotalAgendamento ...
+func TotalAgendamento(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota total agendas ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	codigopaciente := mux.Vars(r)["codigopaciente"]
+
+	agendas := paciente.Paciente{}
+
+	query := "SELECT COUNT(*) FROM agendamento WHERE codigopaciente = ?"
+
+	row := DB.QueryRow(query, codigopaciente)
+
+	row.Scan(&agendas.TotalAgedamentos)
+
+	json.NewEncoder(w).Encode(agendas)
+}
+
 // AgendaHome ...
 func AgendaHome(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Chamando rota agenda home ...")
+	fmt.Println("Chamando rota agenda home paciente ...")
 	w.Header().Set("Content-Type", "application/json")
 
 	currentTime := time.Now()
