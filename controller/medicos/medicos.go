@@ -2,12 +2,14 @@ package medico
 
 import (
 	"ClinicaBack/config"
+	"ClinicaBack/model/agendamedico"
 	"ClinicaBack/model/agendamento"
 	"ClinicaBack/model/horariosagenda"
 	"ClinicaBack/model/medico"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -19,6 +21,7 @@ var mensagemErro string
 var medicos []medico.Medico
 var agendamentos []agendamento.Agendamento
 var horarios []horariosagenda.Horariosagenda
+var agendamedicos []agendamedico.AgendaMedico
 
 // Adicionar ...
 func Adicionar(w http.ResponseWriter, r *http.Request) {
@@ -216,6 +219,100 @@ func BuscarHorariosIndisponiveis(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write(jsonResult)
 	}
+}
+
+// Agenda ...
+func Agenda(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota agenda medico ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	data := mux.Vars(r)["data"]
+	codigomedico := mux.Vars(r)["codigomedico"]
+
+	agendas := agendamedicos[:0]
+
+	query := "SELECT agendamento.codigo,nome,email,carteira FROM agendamento " +
+		"INNER JOIN paciente " +
+		"ON paciente.codigo = agendamento.codigopaciente " +
+		"WHERE codigomedico = ? AND data = ?"
+	rows, err := DB.Query(query, codigomedico, data)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	for rows.Next() {
+		agenda := agendamedico.AgendaMedico{}
+		rows.Scan(&agenda.Codigo, &agenda.NomePaciente, &agenda.Email, &agenda.Carteira)
+		agendas = append(agendas, agenda)
+	}
+
+	json.NewEncoder(w).Encode(agendas)
+}
+
+// TotalAgendasDia ...
+func TotalAgendasDia(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota total agendas do dia ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	currentTime := time.Now()
+	dataAtual := currentTime.Format("2006-01-02")
+	codigomedico := mux.Vars(r)["codigomedico"]
+
+	agendas := medico.Medico{}
+
+	query := "SELECT COUNT(*) FROM agendamento WHERE codigomedico = ? AND data = ?"
+
+	row := DB.QueryRow(query, codigomedico, dataAtual)
+
+	row.Scan(&agendas.AgendamentosDia)
+
+	json.NewEncoder(w).Encode(agendas)
+}
+
+// TotalAgendamento ...
+func TotalAgendamento(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota total agendas ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	codigomedico := mux.Vars(r)["codigomedico"]
+
+	agendas := medico.Medico{}
+
+	query := "SELECT COUNT(*) FROM agendamento WHERE codigomedico = ?"
+
+	row := DB.QueryRow(query, codigomedico)
+
+	row.Scan(&agendas.TotalAgedamentos)
+
+	json.NewEncoder(w).Encode(agendas)
+}
+
+// AgendaHome ...
+func AgendaHome(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Chamando rota agenda home médico ...")
+	w.Header().Set("Content-Type", "application/json")
+
+	currentTime := time.Now()
+	dataAtual := currentTime.Format("2006-01-02")
+	codigomedico := mux.Vars(r)["codigomedico"]
+
+	agendas := agendamedicos[:0]
+
+	query := "SELECT agendamento.codigo,nome,email,carteira FROM agendamento " +
+		"INNER JOIN paciente " +
+		"ON paciente.codigo = agendamento.codigopaciente " +
+		"WHERE codigomedico = ? AND data = ?"
+	rows, err := DB.Query(query, codigomedico, dataAtual)
+	mensagemErro = "query_exec_erro"
+	CheckErro(w, r, mensagemErro, err)
+
+	for rows.Next() {
+		agenda := agendamedico.AgendaMedico{}
+		rows.Scan(&agenda.Codigo, &agenda.NomePaciente, &agenda.Email, &agenda.Carteira)
+		agendas = append(agendas, agenda)
+	}
+
+	json.NewEncoder(w).Encode(agendas)
+
 }
 
 // Alterar ...
