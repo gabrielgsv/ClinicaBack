@@ -231,7 +231,7 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 
 	agendas := agendamedicos[:0]
 
-	query := "SELECT agendamento.codigo,nome,email,carteira FROM agendamento " +
+	query := "SELECT agendamento.codigo,nome,email,hora,status FROM agendamento " +
 		"INNER JOIN paciente " +
 		"ON paciente.codigo = agendamento.codigopaciente " +
 		"WHERE codigomedico = ? AND data = ?"
@@ -241,7 +241,7 @@ func Agenda(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		agenda := agendamedico.AgendaMedico{}
-		rows.Scan(&agenda.Codigo, &agenda.NomePaciente, &agenda.Email, &agenda.Carteira)
+		rows.Scan(&agenda.Codigo, &agenda.NomePaciente, &agenda.Email, &agenda.Horario, &agenda.Status)
 		agendas = append(agendas, agenda)
 	}
 
@@ -297,7 +297,7 @@ func AgendaHome(w http.ResponseWriter, r *http.Request) {
 
 	agendas := agendamedicos[:0]
 
-	query := "SELECT agendamento.codigo,nome,email,carteira FROM agendamento " +
+	query := "SELECT agendamento.codigo,nome,email,hora,status FROM agendamento " +
 		"INNER JOIN paciente " +
 		"ON paciente.codigo = agendamento.codigopaciente " +
 		"WHERE codigomedico = ? AND data = ?"
@@ -307,7 +307,7 @@ func AgendaHome(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		agenda := agendamedico.AgendaMedico{}
-		rows.Scan(&agenda.Codigo, &agenda.NomePaciente, &agenda.Email, &agenda.Carteira)
+		rows.Scan(&agenda.Codigo, &agenda.NomePaciente, &agenda.Email, &agenda.Horario, &agenda.Status)
 		agendas = append(agendas, agenda)
 	}
 
