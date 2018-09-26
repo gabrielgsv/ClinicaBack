@@ -5,5 +5,6 @@ type AgendaMedico struct {
 	Codigo       uint   `json:"codigo"`
 	NomePaciente string `json:"nomepaciente"`
 	Email        string `json:"email"`
-	Carteira     string `json:"carteira"`
+	Horario      string `json:"hora"`
+	Status       string `json:"status"`
 }
