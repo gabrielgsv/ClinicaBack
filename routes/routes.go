@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
@@ -29,8 +30,8 @@ func HandleFunc() {
 	})
 
 	handler := c.Handler(rotas)
-	portaAplicacao = ":3001" //l	ocalhost
-	// portaAplicacao = ":" + os.Getenv("PORT") //heroku aplicação
+	// portaAplicacao = ":3001" //l	ocalhost
+	portaAplicacao = ":" + os.Getenv("PORT") //heroku aplicação
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
