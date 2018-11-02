@@ -169,7 +169,7 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	data := mux.Vars(r)["data"]
 	codigomedico := mux.Vars(r)["codigomedico"]
 
-	query := "SELECT codigo,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND status != 'a'"
+	query := "SELECT codigo,hora FROM agendamento WHERE codigomedico = ? AND data = ? AND status = 'a'"
 	rows, err := DB.Query(query, codigomedico, data)
 	mensagemErro = "query_exec_erro"
 	CheckErro(w, r, mensagemErro, err)
@@ -190,6 +190,7 @@ func BuscarHorariosDisponiveis(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// BuscarHorariosisponiveis ...
 func BuscarHorariosIndisponiveis(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Chamando rota buscar horarios indisponíveis do médico ...")
 	w.Header().Set("Content-Type", "application/json")
