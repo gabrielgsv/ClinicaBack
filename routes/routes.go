@@ -5,10 +5,10 @@ import (
 	"ClinicaBack/controller/auth"
 	"ClinicaBack/controller/medicos"
 	"ClinicaBack/controller/pacientes"
+	"ClinicaBack/controller/painel"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	// "github.com/gorilla/handlers"
@@ -30,14 +30,15 @@ func HandleFunc() {
 	})
 
 	handler := c.Handler(rotas)
-	// portaAplicacao = ":3001" //l	ocalhost
-	portaAplicacao = ":" + os.Getenv("PORT") //heroku aplicação
+	portaAplicacao = ":3001" //l	ocalhost
+	// portaAplicacao = ":" + os.Getenv("PORT") //heroku aplicação
 
 	fmt.Println("Aplicação ON: porta => ", portaAplicacao)
 
 	rotas.HandleFunc("/api/login", auth.Logar).Methods("POST")
 	rotas.HandleFunc("/api/recuperartoken", auth.RecuperarToken).Methods("GET")
 	rotas.HandleFunc("/api/validartoken", auth.ValidarToken).Methods("GET")
+	rotas.HandleFunc("/api/cancelarconsulta/{codigoagendamento}", painel.CancelarConsulta).Methods("POST")
 
 	rotas.HandleFunc("/api/paciente", pacientes.Adicionar).Methods("POST")
 	rotas.HandleFunc("/api/paciente", pacientes.Todos).Methods("GET")
